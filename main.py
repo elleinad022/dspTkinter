@@ -11,7 +11,6 @@ label1.pack(pady=20)
 label2 = tk.Label(windowFour, text="Select a wav file to filter : ", font=('Arial 14'))
 label2.pack()
 
-windowFour.configure()
 
 
 windowFour.mainloop()
