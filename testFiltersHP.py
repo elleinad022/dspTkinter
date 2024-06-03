@@ -29,27 +29,30 @@ def plot_filter_response(cutoff, fs, order=5):
     plt.grid()
     plt.show()
 
-# Load audio file using librosa
-audio, fs = librosa.load('input_audio_hp.wav', sr=None, mono=False)
-
-# Define filter parameters
 cutoff_frequency = 1000  # 1000 Hz cutoff frequency
 order = 5  # Order of the filter
 
-# Apply high-pass filter
-if audio.ndim == 2:
-    # Handle stereo audio
-    audio_left = audio[0, :]
-    audio_right = audio[1, :]
-    filtered_audio_left = butter_highpass_filter(audio_left, cutoff_frequency, fs, order)
-    filtered_audio_right = butter_highpass_filter(audio_right, cutoff_frequency, fs, order)
-    filtered_audio = np.vstack((filtered_audio_left, filtered_audio_right))
-else:
-    # Handle mono audio
-    filtered_audio = butter_highpass_filter(audio, cutoff_frequency, fs, order)
+# Load audio file using librosa
+ 
+    
 
-# Save filtered audio to a new file
-sf.write('filtered_audio_hp.wav', filtered_audio.T, fs)
+def apply_hp_filter(fileinput):
+    audio, fs = librosa.load(fileinput, sr=None, mono=False)
+    if audio.ndim == 2:
+        # Handle stereo audio
+        audio_left = audio[0, :]
+        audio_right = audio[1, :]
+        filtered_audio_left = butter_highpass_filter(audio_left, cutoff_frequency, fs, order)
+        filtered_audio_right = butter_highpass_filter(audio_right, cutoff_frequency, fs, order)
+        filtered_audio = np.vstack((filtered_audio_left, filtered_audio_right))
+    else:
+        # Handle mono audio
+        filtered_audio = butter_highpass_filter(audio, cutoff_frequency, fs, order)
+
+    # Save filtered audio to a new file
+    sf.write('filtered_audio_hp.wav', filtered_audio.T, fs)
+    plot_filter_response(cutoff_frequency, fs, order)
+    
 
 # Plot the frequency response of the filter
-plot_filter_response(cutoff_frequency, fs, order)
+
