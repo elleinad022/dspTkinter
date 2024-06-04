@@ -9,24 +9,44 @@ import IPython.display as ipd
 def openFile():
     global filePath
     filePath = fd.askopenfilename(title="OPEN A WAV FILE. OKAY?", filetypes=(("Audio wav files", "*.wav"),))
+    pathVar.set(filePath)
     print(filePath)
     return filePath
 
 def playFile():
-    pg.mixer.init()
-    pg.mixer.music.load(filePath)
-    pg.mixer.music.play(loops=0)
+    try:
+        pg.mixer.init()
+        pg.mixer.music.load(filePath)
+        pg.mixer.music.play(loops=0)
+
+    except:
+        tk.messagebox.showinfo("File Error", "No File is selected")
+        print("No file was selected")
+    
 
 def stopFile():
-    pg.mixer.music.stop()
+    try:
+        pg.mixer.music.stop()
+    except:
+        return
 
-def applySelectedFilter(loadedFile):
-    hp.apply_hp_filter(loadedFile)
+def selectFilter():
+    try:
+        if filePath:
+            selectorWindow = tk.Toplevel()
+            selectorWindow.resizable(0,0)
+            selectorWindow.geometry("400x300")
+            selectorWindow.title("Filter Selection")
+
+
+    except:
+        tk.messagebox.showinfo("File Error", "No File is selected")
+        print("No file was selected")
     
 
 windowFour = tk.Tk()
 windowFour.resizable(0,0)
-windowFour.geometry("700x350")
+windowFour.geometry("600x350")
 windowFour.title("HP/LP switchable")
 
 label1 = tk.Label(windowFour, text="High pass and Low pass switchable filter", font=('Arial 20 underline'))
@@ -47,8 +67,15 @@ playBtn.grid(row=0, column=0, padx=5)
 selectBtn.grid(row=0, column=1, padx=5)
 stopBtn.grid(row=0, column=2, padx=5)
 
+label3 = tk.Label(windowFour, text="Selected file: ", font=("Arial 14"))
+label3.pack()
 
-applyBtn = tk.Button(text="Apply Filter", command=applySelectedFilter, padx=20 , pady=20)
+pathVar = tk.StringVar()
+label4 = tk.Label(windowFour,textvariable= pathVar, font=('Arial 11'))
+label4.pack()
+
+
+applyBtn = tk.Button(text="Apply a Filter", command=selectFilter, padx=20 , pady=20)
 applyBtn.pack(pady=20)
 
 
