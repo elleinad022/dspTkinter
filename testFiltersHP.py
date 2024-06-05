@@ -54,7 +54,8 @@ def apply_hp_filter(file_input_hp):
 
     # Save filtered audio to a new file
     sf.write(file_input_hp + 'filtered_audio_hp.wav', filtered_audio.T, fs)
-    
+    newFile = file_input_hp + 'filtered_audio_lp.wav'
+    return newFile
     
 
 # Plot the frequency response of the filter

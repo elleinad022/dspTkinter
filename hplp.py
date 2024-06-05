@@ -55,18 +55,31 @@ def selectFilter():
     
 
 def applyFilter():
+    global filteredFile
     try:
         if(filter.get()==0):
-            lp.apply_lp_filter(filePath)
+            newFile = lp.apply_lp_filter(filePath)
             print("Lowpass selected")
+            filteredFile = newFile
         elif(filter.get()==1):
-            hp.apply_hp_filter(filePath)
+            newFile = hp.apply_hp_filter(filePath)
+            filteredFile = newFile
             print("Highpass selected")
     except:
         tk.messagebox.showinfo("File Error", "Select audio file and filter to apply")
         print("No file was selected")
+
+def playOut():
+    try:
+        pg.mixer.init()
+        pg.mixer.music.load(filteredFile)
+        pg.mixer.music.play(loops=0)
+
+    except:
+        tk.messagebox.showinfo("File Error", "No File has been filtered")
+        print("No file was filtered")
     
-    
+
     
 
 windowFour = tk.Tk()
@@ -89,7 +102,7 @@ label2.pack()
 btnFrame = tk.Frame()
 btnFrame.configure(background='#E9DDD7')
 btnFrame.pack()
-selectBtn = tk.Button(btnFrame, text="Open File", command=openFile, padx=15 , pady=15)
+selectBtn = tk.Button(btnFrame, text="OPEN FILE", command=openFile, padx=15 , pady=15, font=('Century Gothic Bold', 10))
 selectBtn.configure(background='#3066BE')
 
 playBtn = tk.Button(btnFrame, text="Play File", command=playFile, padx=15 , pady=15)
@@ -136,12 +149,16 @@ footerFrame = tk.Frame()
 footerFrame.config(background='#E9DDD7')
 footerFrame.pack()
 
+playOutBtn = tk.Button(footerFrame ,text="PLAY NEW FILE", command=playOut, padx=20 , pady=20, font=('Century Gothic Bold', 10))
+playOutBtn.configure(background='#3066BE')
+playOutBtn.grid(row=0, column=0, pady=20, padx=40)
+applyBtn = tk.Button(footerFrame ,text="APPLY FILTER", command=applyFilter, padx=20 , pady=20, font=('Century Gothic Bold', 10))
+applyBtn.configure(background='#3066BE')
+applyBtn.grid(row=0, column=1, pady=20, padx=40)
 backBtn = tk.Button(footerFrame ,text="Back to Menu", padx=20 , pady=20)
 backBtn.configure(background='#B4C5E4')
-backBtn.grid(row=0, column=1, pady=20, padx=40, sticky='E')
-applyBtn = tk.Button(footerFrame ,text="Apply Filter", command=applyFilter, padx=20 , pady=20)
-applyBtn.configure(background='#3066BE')
-applyBtn.grid(row=0, column=0, pady=20, padx=40, sticky='W')
+backBtn.grid(row=0, column=2, pady=20, padx=40)
+
 
 
 

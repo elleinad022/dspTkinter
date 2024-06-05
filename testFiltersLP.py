@@ -44,6 +44,8 @@ def apply_lp_filter(file_Input_lp):
 
     # Save filtered audio to a new file
     sf.write(file_Input_lp + 'filtered_audio_lp.wav', filtered_audio.T, fs)
+    newFile = file_Input_lp + 'filtered_audio_lp.wav'
+    return newFile
 
 
 # Plot the frequency response with a logarithmic scale
