@@ -3,6 +3,7 @@ from scipy.signal import butter, lfilter, freqz
 import librosa
 import soundfile as sf
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 
 def butter_lowpass(cutoff, fs, order=5):
     return butter(order, cutoff, fs=fs, btype='low', analog=False)
@@ -50,16 +51,18 @@ def plot_lpfilter_response(cutoff_lp, file_input_lp, order=5):
     audio, fs = librosa.load(file_input_lp, sr=None, mono=False)
     b, a = butter_lowpass(cutoff_lp, fs, order=order)
     w, h = freqz(b, a, worN=8000)
-    plt.figure(figsize=(12, 6))
-    plt.plot(0.5 * fs * w / np.pi, 20 * np.log10(np.abs(h)), 'b')  # Convert amplitude to dB
-    plt.plot(cutoff_lp, -3, 'ko')  # Mark -3 dB point
-    plt.axvline(cutoff_lp, color='k', linestyle='--')
-    plt.xlim(0, 0.5 * fs)
-    plt.title("Low-Pass Filter Frequency Response")
-    plt.xlabel('Frequency [Hz]')
-    plt.ylabel('Gain [dB]')
-    plt.grid()
-    plt.show()
-
+    
+    fig = Figure(figsize=(6, 3), dpi=100)  # Adjusted figure size to fit within the frame
+    ax = fig.add_subplot(111)
+    ax.plot(0.5 * fs * w / np.pi, 20 * np.log10(np.abs(h)), 'b')  # Convert amplitude to dB
+    ax.plot(cutoff_lp, -3, 'ko')  # Mark -3 dB point
+    ax.axvline(cutoff_lp, color='k', linestyle='--')
+    ax.set_xlim(0, 0.5 * fs)
+    ax.set_title("Low-Pass Filter Frequency Response")
+    ax.set_xlabel('Frequency [Hz]')
+    ax.set_ylabel('Gain [dB]')
+    ax.grid()
+    
+    return fig
 
 

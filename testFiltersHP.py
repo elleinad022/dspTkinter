@@ -3,6 +3,7 @@ from scipy import signal
 import librosa
 import soundfile as sf
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 
 def butter_highpass(cutoff, fs, order=5):
     nyq = 0.5 * fs
@@ -19,16 +20,19 @@ def plot_hpfilter_response(cutoff_hp, file_input_hp, order=5):
     audio, fs = librosa.load(file_input_hp, sr=None, mono=False)
     b, a = butter_highpass(cutoff_hp, fs, order=order)
     w, h = signal.freqz(b, a, worN=8000)
-    plt.figure(figsize=(12, 6))
-    plt.plot(0.5 * fs * w / np.pi, np.abs(h), 'b')
-    plt.plot(cutoff_hp, 0.5 * np.sqrt(2), 'ko')
-    plt.axvline(cutoff_hp, color='k', linestyle='--')
-    plt.xlim(0, 0.5 * fs)
-    plt.title("High-Pass Filter Frequency Response")
-    plt.xlabel('Frequency [Hz]')
-    plt.ylabel('Gain')
-    plt.grid()
-    plt.show()
+    
+    fig = Figure(figsize=(6, 3), dpi=100)
+    ax = fig.add_subplot(111)
+    ax.plot(0.5 * fs * w / np.pi, np.abs(h), 'b')
+    ax.plot(cutoff_hp, 0.5 * np.sqrt(2), 'ko')
+    ax.axvline(cutoff_hp, color='k', linestyle='--')
+    ax.set_xlim(0, 0.5 * fs)
+    ax.set_title("High-Pass Filter Frequency Response")
+    ax.set_xlabel('Frequency [Hz]')
+    ax.set_ylabel('Gain')
+    ax.grid()
+    
+    return fig
 
 cutoff_frequency = 1000  # 1000 Hz cutoff frequency
 order = 5  # Order of the filter

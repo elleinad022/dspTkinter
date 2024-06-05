@@ -4,6 +4,7 @@ import testFiltersHP as hp
 import pygame as pg
 import IPython.display as ipd
 import testFiltersLP as lp
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 def openFile():
@@ -35,11 +36,20 @@ cutoff_frequency_hp = 1000
     
 def selectFilter():
     try:
+        for widget in pltCanvas.winfo_children():
+            widget.destroy()
+
         if(filter.get()==0):
-            lp.plot_lpfilter_response(cutoff_frequency_lp, filePath)
+            lpFig = lp.plot_lpfilter_response(cutoff_frequency_lp, filePath)
+            canvas_agg = FigureCanvasTkAgg(lpFig, master=pltCanvas)
+            canvas_agg.draw()
+            canvas_agg.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
             
         elif(filter.get()==1):
-            hp.plot_hpfilter_response(cutoff_frequency_hp, filePath)
+            hpFig = hp.plot_hpfilter_response(cutoff_frequency_hp, filePath)
+            canvas_agg = FigureCanvasTkAgg(hpFig, master=pltCanvas)
+            canvas_agg.draw()
+            canvas_agg.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
     except:
         return
     
@@ -61,7 +71,7 @@ def applyFilter():
 
 windowFour = tk.Tk()
 windowFour.resizable(0,0)
-windowFour.geometry("700x500")
+windowFour.geometry("1000x800")
 windowFour.title("HP/LP switchable")
 
 label1 = tk.Label(windowFour, text="High pass and Low pass switchable filter", font=('Arial 20 underline'))
@@ -103,7 +113,8 @@ radBtnLp = tk.Radiobutton(radioFrame, text="Low pass Filter",value=0 , variable=
 radBtnHp = tk.Radiobutton(radioFrame, text="High pass Filter",value=1 , variable=filter,
                           command=selectFilter, 
                           font=('Arial 11'))
-
+pltCanvas = tk.Frame(radioFrame, width=600, height=300)
+pltCanvas.grid(column=2, row=1, rowspan=2)
 radBtnHp.grid(column=0, row=1)
 radBtnLp.grid(column=0, row=2)
 
