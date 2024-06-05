@@ -57,13 +57,16 @@ def selectFilter():
 def applyFilter():
     global filteredFile
     try:
+        
         if(filter.get()==0):
-            newFile = lp.apply_lp_filter(filePath)
+            newLpFile = lp.apply_lp_filter(filePath)
             print("Lowpass selected")
-            filteredFile = newFile
+            filteredFile = ""
+            filteredFile = newLpFile
         elif(filter.get()==1):
-            newFile = hp.apply_hp_filter(filePath)
-            filteredFile = newFile
+            newHpFile = hp.apply_hp_filter(filePath)
+            filteredFile = ""
+            filteredFile = newHpFile
             print("Highpass selected")
     except:
         tk.messagebox.showinfo("File Error", "Select audio file and filter to apply")
@@ -78,6 +81,9 @@ def playOut():
     except:
         tk.messagebox.showinfo("File Error", "No File has been filtered")
         print("No file was filtered")
+
+def exitApp():
+    windowFour.destroy()
     
 
     
@@ -155,9 +161,9 @@ playOutBtn.grid(row=0, column=0, pady=20, padx=40)
 applyBtn = tk.Button(footerFrame ,text="APPLY FILTER", command=applyFilter, padx=20 , pady=20, font=('Century Gothic Bold', 10))
 applyBtn.configure(background='#3066BE')
 applyBtn.grid(row=0, column=1, pady=20, padx=40)
-backBtn = tk.Button(footerFrame ,text="Back to Menu", padx=20 , pady=20)
-backBtn.configure(background='#B4C5E4')
-backBtn.grid(row=0, column=2, pady=20, padx=40)
+exitBtn = tk.Button(footerFrame ,text="Exit",command=exitApp, padx=40 , pady=20)
+exitBtn.configure(background='#B4C5E4')
+exitBtn.grid(row=0, column=2, pady=20, padx=40)
 
 
 
