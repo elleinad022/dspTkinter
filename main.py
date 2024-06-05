@@ -29,6 +29,19 @@ def stopFile():
         pg.mixer.music.stop()
     except:
         return
+
+cutoff_frequency_lp = 3000 
+cutoff_frequency_hp = 1000
+    
+def selectFilter():
+    try:
+        if(filter.get()==0):
+            lp.plot_lpfilter_response(cutoff_frequency_lp, filePath)
+            
+        elif(filter.get()==1):
+            hp.plot_hpfilter_response(cutoff_frequency_hp, filePath)
+    except:
+        return
     
 
 def applyFilter():
@@ -81,10 +94,18 @@ label5.pack()
 
 filter = tk.IntVar()
 
-radBtnLp = tk.Radiobutton(windowFour, text="Low pass Filter",value=0 , variable=filter, font=('Arial 11'))
-radBtnHp = tk.Radiobutton(windowFour, text="High pass Filter",value=1 , variable=filter, font=('Arial 11'))
-radBtnHp.pack(anchor='w')
-radBtnLp.pack(anchor='w')
+radioFrame = tk.LabelFrame(windowFour, text="FILTERS", padx=20, pady=20)
+radioFrame.pack()
+
+radBtnLp = tk.Radiobutton(radioFrame, text="Low pass Filter",value=0 , variable=filter,
+                          command=selectFilter, 
+                          font=('Arial 11'))
+radBtnHp = tk.Radiobutton(radioFrame, text="High pass Filter",value=1 , variable=filter,
+                          command=selectFilter, 
+                          font=('Arial 11'))
+
+radBtnHp.grid(column=0, row=1)
+radBtnLp.grid(column=0, row=2)
 
 
 applyBtn = tk.Button(text="Apply Filter", command=applyFilter, padx=20 , pady=20)
