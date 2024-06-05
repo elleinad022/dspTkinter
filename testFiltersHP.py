@@ -53,7 +53,7 @@ def apply_hp_filter(file_input_hp):
         filtered_audio = butter_highpass_filter(audio, cutoff_frequency, fs, order)
 
     # Save filtered audio to a new file
-    sf.write('filtered_audio_hp.wav', filtered_audio.T, fs)
+    sf.write(file_input_hp + 'filtered_audio_hp.wav', filtered_audio.T, fs)
     
     
 

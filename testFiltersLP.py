@@ -43,7 +43,7 @@ def apply_lp_filter(file_Input_lp):
         filtered_audio = butter_lowpass_filter(audio, cutoff_frequency, fs, order)
 
     # Save filtered audio to a new file
-    sf.write('filtered_audio_lp.wav', filtered_audio.T, fs)
+    sf.write(file_Input_lp + 'filtered_audio_lp.wav', filtered_audio.T, fs)
 
 
 # Plot the frequency response with a logarithmic scale

@@ -71,19 +71,27 @@ def applyFilter():
 
 windowFour = tk.Tk()
 windowFour.resizable(0,0)
-windowFour.geometry("1000x800")
+windowFour.geometry("1000x750")
 windowFour.title("HP/LP switchable")
+windowFour.configure(background= '#E9DDD7')
 
-label1 = tk.Label(windowFour, text="High pass and Low pass switchable filter", font=('Arial 20 underline'))
-label1.pack(pady=20)
 
-label2 = tk.Label(windowFour, text="Select a wav file to filter", font=('Arial 14'))
+label1 = tk.Label(windowFour, text="High pass and Low pass switchable filter", font=('Century Gothic Bold', 15))
+label1.configure(background="#090C9B", foreground='white')
+label1.pack(pady=15, expand='True', fill="both")
+
+label2 = tk.Label(windowFour, text="Select a wav file to filter", font=('Century Gothic Bold', 15))
+label2.configure(background="#E9DDD7")
 label2.pack()
 
 
+
 btnFrame = tk.Frame()
+btnFrame.configure(background='#E9DDD7')
 btnFrame.pack()
 selectBtn = tk.Button(btnFrame, text="Open File", command=openFile, padx=15 , pady=15)
+selectBtn.configure(background='#3066BE')
+
 playBtn = tk.Button(btnFrame, text="Play File", command=playFile, padx=15 , pady=15)
 stopBtn = tk.Button(btnFrame, text="Stop Playback", command=stopFile, padx=15 , pady=15)
 
@@ -92,35 +100,48 @@ playBtn.grid(row=0, column=0, padx=5)
 selectBtn.grid(row=0, column=1, padx=5)
 stopBtn.grid(row=0, column=2, padx=5)
 
-label3 = tk.Label(windowFour, text="Selected file: ", font=("Arial 14"))
+label3 = tk.Label(windowFour, text="Selected file: ", font=('Century Gothic Bold', 15))
+label3.configure(background="#E9DDD7")
 label3.pack()
 
 pathVar = tk.StringVar()
-label4 = tk.Label(windowFour,textvariable= pathVar, font=('Arial 11'))
-label4.pack()
+label4 = tk.Label(windowFour,textvariable= pathVar, font=('Century Gothic Bold', 15))
+label4.configure(background="#E9DDD7")
+label4.pack(pady=5)
 
-label5 = tk.Label(windowFour, text="Choose Filter", font=('Arial 14'))
+label5 = tk.Label(windowFour, text="Choose Filter", font=('Century Gothic Bold', 15))
+label5.configure(background="#E9DDD7")
 label5.pack()
 
 filter = tk.IntVar()
 
 radioFrame = tk.LabelFrame(windowFour, text="FILTERS", padx=20, pady=20)
+radioFrame.configure(background='#E9DDD7')
 radioFrame.pack()
 
 radBtnLp = tk.Radiobutton(radioFrame, text="Low pass Filter",value=0 , variable=filter,
                           command=selectFilter, 
-                          font=('Arial 11'))
+                          font=('Century Gothic Bold', 15))
+radBtnLp.configure(background='#E9DDD7')
 radBtnHp = tk.Radiobutton(radioFrame, text="High pass Filter",value=1 , variable=filter,
                           command=selectFilter, 
-                          font=('Arial 11'))
+                          font=('Century Gothic Bold', 15))
+radBtnHp.configure(background='#E9DDD7')
 pltCanvas = tk.Frame(radioFrame, width=600, height=300)
 pltCanvas.grid(column=2, row=1, rowspan=2)
 radBtnHp.grid(column=0, row=1)
 radBtnLp.grid(column=0, row=2)
 
+footerFrame = tk.Frame()
+footerFrame.config(background='#E9DDD7')
+footerFrame.pack()
 
-applyBtn = tk.Button(text="Apply Filter", command=applyFilter, padx=20 , pady=20)
-applyBtn.pack(pady=20)
+backBtn = tk.Button(footerFrame ,text="Back to Menu", padx=20 , pady=20)
+backBtn.configure(background='#B4C5E4')
+backBtn.grid(row=0, column=1, pady=20, padx=40, sticky='E')
+applyBtn = tk.Button(footerFrame ,text="Apply Filter", command=applyFilter, padx=20 , pady=20)
+applyBtn.configure(background='#3066BE')
+applyBtn.grid(row=0, column=0, pady=20, padx=40, sticky='W')
 
 
 
