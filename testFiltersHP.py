@@ -15,7 +15,7 @@ def butter_highpass_filter(data, cutoff, fs, order=5):
     y = signal.filtfilt(b, a, data)
     return y
 
-def plot_filter_response(cutoff, fs, order=5):
+def plot_hpfilter_response(cutoff, fs, order=5):
     b, a = butter_highpass(cutoff, fs, order=order)
     w, h = signal.freqz(b, a, worN=8000)
     plt.figure(figsize=(12, 6))
@@ -51,7 +51,7 @@ def apply_hp_filter(fileinput):
 
     # Save filtered audio to a new file
     sf.write('filtered_audio_hp.wav', filtered_audio.T, fs)
-    plot_filter_response(cutoff_frequency, fs, order)
+    
     
 
 # Plot the frequency response of the filter

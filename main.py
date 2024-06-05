@@ -3,7 +3,7 @@ import tkinter.filedialog as fd
 import testFiltersHP as hp
 import pygame as pg
 import IPython.display as ipd
-#import testFiltersLP as lp
+import testFiltersLP as lp
 
 
 def openFile():
@@ -29,30 +29,32 @@ def stopFile():
         pg.mixer.music.stop()
     except:
         return
+    
 
-def selectFilter():
+def applyFilter():
     try:
-        if filePath:
-            selectorWindow = tk.Toplevel()
-            selectorWindow.resizable(0,0)
-            selectorWindow.geometry("400x300")
-            selectorWindow.title("Filter Selection")
-
-
+        if(filter.get()==0):
+            lp.apply_lp_filter(filePath)
+            print("Lowpass selected")
+        elif(filter.get()==1):
+            hp.apply_hp_filter(filePath)
+            print("Highpass selected")
     except:
-        tk.messagebox.showinfo("File Error", "No File is selected")
+        tk.messagebox.showinfo("File Error", "Select audio file and filter to apply")
         print("No file was selected")
+    
+    
     
 
 windowFour = tk.Tk()
 windowFour.resizable(0,0)
-windowFour.geometry("600x350")
+windowFour.geometry("700x500")
 windowFour.title("HP/LP switchable")
 
 label1 = tk.Label(windowFour, text="High pass and Low pass switchable filter", font=('Arial 20 underline'))
 label1.pack(pady=20)
 
-label2 = tk.Label(windowFour, text="Select a wav file to filter : ", font=('Arial 14'))
+label2 = tk.Label(windowFour, text="Select a wav file to filter", font=('Arial 14'))
 label2.pack()
 
 
@@ -74,8 +76,18 @@ pathVar = tk.StringVar()
 label4 = tk.Label(windowFour,textvariable= pathVar, font=('Arial 11'))
 label4.pack()
 
+label5 = tk.Label(windowFour, text="Choose Filter", font=('Arial 14'))
+label5.pack()
 
-applyBtn = tk.Button(text="Apply a Filter", command=selectFilter, padx=20 , pady=20)
+filter = tk.IntVar()
+
+radBtnLp = tk.Radiobutton(windowFour, text="Low pass Filter",value=0 , variable=filter, font=('Arial 11'))
+radBtnHp = tk.Radiobutton(windowFour, text="High pass Filter",value=1 , variable=filter, font=('Arial 11'))
+radBtnHp.pack(anchor='w')
+radBtnLp.pack(anchor='w')
+
+
+applyBtn = tk.Button(text="Apply Filter", command=applyFilter, padx=20 , pady=20)
 applyBtn.pack(pady=20)
 
 

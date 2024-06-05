@@ -12,37 +12,38 @@ def butter_lowpass_filter(data, cutoff, fs, order=5):
     y = lfilter(b, a, data)
     return y
 
-# Load audio file using librosa
-audio, fs = librosa.load('input_audio_lp.wav', sr=None, mono=False)
+def apply_lp_filter(fileInput):
+    # Load audio file using librosa
+    audio, fs = librosa.load('input_audio_lp.wav', sr=None, mono=False)
 
-# Filter parameters
-order = 6
-cutoff_frequency = 3000  # 3000 Hz cutoff frequency
+    # Filter parameters
+    order = 6
+    cutoff_frequency = 3000  # 3000 Hz cutoff frequency
 
-# Get the filter coefficients
-b, a = butter_lowpass(cutoff_frequency, fs, order)
+    # Get the filter coefficients
+    b, a = butter_lowpass(cutoff_frequency, fs, order)
 
-# Compute frequency response
-w, h = freqz(b, a, fs=fs)
+    # Compute frequency response
+    w, h = freqz(b, a, fs=fs)
 
-# Apply low-pass filter
-if audio.ndim == 2:
-    # Handle stereo audio
-    audio_left = audio[0, :]
-    audio_right = audio[1, :]
-    filtered_audio_left = butter_lowpass_filter(audio_left, cutoff_frequency, fs, order)
-    filtered_audio_right = butter_lowpass_filter(audio_right, cutoff_frequency, fs, order)
-    filtered_audio = np.vstack((filtered_audio_left, filtered_audio_right))
-else:
-    # Handle mono audio
-    filtered_audio = butter_lowpass_filter(audio, cutoff_frequency, fs, order)
+    # Apply low-pass filter
+    if audio.ndim == 2:
+        # Handle stereo audio
+        audio_left = audio[0, :]
+        audio_right = audio[1, :]
+        filtered_audio_left = butter_lowpass_filter(audio_left, cutoff_frequency, fs, order)
+        filtered_audio_right = butter_lowpass_filter(audio_right, cutoff_frequency, fs, order)
+        filtered_audio = np.vstack((filtered_audio_left, filtered_audio_right))
+    else:
+        # Handle mono audio
+        filtered_audio = butter_lowpass_filter(audio, cutoff_frequency, fs, order)
 
-# Save filtered audio to a new file
-sf.write('filtered_audio_lp.wav', filtered_audio.T, fs)
+    # Save filtered audio to a new file
+    sf.write('filtered_audio_lp.wav', filtered_audio.T, fs)
 
 
 # Plot the frequency response with a logarithmic scale
-def plot_filter_response(cutoff, fs, order=5):
+def plot_lpfilter_response(cutoff, fs, order=5):
     b, a = butter_lowpass(cutoff, fs, order=order)
     w, h = freqz(b, a, worN=8000)
     plt.figure(figsize=(12, 6))
@@ -56,6 +57,5 @@ def plot_filter_response(cutoff, fs, order=5):
     plt.grid()
     plt.show()
 
-# Call the plot_filter_response function
-plot_filter_response(cutoff_frequency, fs, order)
+
 
